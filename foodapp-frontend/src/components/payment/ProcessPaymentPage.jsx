@@ -1,0 +1,71 @@
+import { useState, useEffect } from "react";
+import { useSearchParams, useNavigate } from "react-router-dom";
+import { useError } from "../common/ErrorDisplay";
+import Payment from "./Payment";
+
+const ProcessPaymentPage = () => {
+  const [searchParams] = useSearchParams();
+  const [paymentCompleted, setPaymentCompleted] = useState(false);
+
+  const navigate = useNavigate();
+  const { ErrorDisplay, showError } = useError();
+
+  const [orderDetails, setOrderDetails] = useState({
+    orderId: "",
+    amount: 0,
+  });
+
+  useEffect(() => {
+    const orderId = searchParams.get("orderid");
+    const amount = searchParams.get("amount");
+
+    if (!orderId || !amount) {
+      showError("Missing order information in URL");
+      return;
+    }
+
+    if (isNaN(amount)) {
+      showError("Invalid amount specified");
+      return;
+    }
+
+    setOrderDetails({
+      orderId: orderId,
+      amount: amount,
+    });
+  }, [searchParams]);
+
+  const handlePaymentSuccess = (paymentIntent) => {
+    setPaymentCompleted(true);
+
+    setTimeout(() => {
+      navigate("/my-order-history");
+    }, 5000);
+  };
+
+  if (paymentCompleted) {
+    return (
+      <div className="payment-success">
+        <h2>Payment Successful!</h2>
+        <p>Thank you for your purchase. Order ID: {orderDetails.orderId}</p>
+        <p>You will receive an email of your payment success</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="checkout-container">
+      <ErrorDisplay />
+
+      {/* <h1>Food App</h1> */}
+
+      <Payment
+        amount={orderDetails.amount}
+        orderId={orderDetails.orderId}
+        onSuccess={handlePaymentSuccess}
+      />
+    </div>
+  );
+};
+
+export default ProcessPaymentPage;
