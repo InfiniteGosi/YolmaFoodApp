@@ -21,7 +21,7 @@ const Navbar = () => {
     <nav>
       <div className="logo">
         <Link to="/" className="logo-link">
-          Food App
+          Yolma
         </Link>
       </div>
 

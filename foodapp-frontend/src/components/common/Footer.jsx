@@ -2,7 +2,7 @@ const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer-content">
-        <p>&copy; {new Date().getFullYear()} Food App. All Rights Reserved.</p>
+        <p>&copy; {new Date().getFullYear()} Yolma. All Rights Reserved.</p>
         <div className="footer-links">
           <a href="/home" className="footer-link">
             Terms of Service
